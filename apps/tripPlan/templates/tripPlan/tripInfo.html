@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Destination</title>
+</head>
+<body>
+	<div id="header">
+		<a href="{% url 'tP:index'%}">Home</a>  <a href="{% url 'loginReg:logout'%}">Logout</a>
+	</div>
+	{% if messages %}
+		<ul class = 'messages'>
+			{% for message in messages %}
+				 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		{% endif %}
+		{% if RegForm.non_field_errors %}
+			{% for error in RegForm.non_field_errors %}
+				<li>{{error}}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<div id="travelInfo">
+		<H1>{{theTrip.destination}}</H1>
+		<p>Planned By:
+			{% for person in theTrip.traveler.all|slice:":1" %}
+				{{person.first_name}} {{person.last_name}}
+			{% endfor %}
+		</p>
+		<p>Departs:  {{theTrip.start_date}}</p>
+		<p>Returns:  {{theTrip.end_date}}</p>
+		<p></p>
+		<h2>Other users joining the trip:</h2>
+		{% for person in theTrip.traveler.all|slice:"1:" %}
+			<p>{{person.first_name}} {{person.last_name}}<p>
+		{% endfor %}
+	</div>
+</body>
+</html>

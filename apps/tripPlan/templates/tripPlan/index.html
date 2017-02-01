@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Travel Dashboard</title>
+</head>
+<body>
+	<div id="header">
+		<a href="{% url 'loginReg:logout'%}">Logout</a>
+	</div>
+	{% if messages %}
+		<ul class = 'messages'>
+			{% for message in messages %}
+				 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		{% endif %}
+		{% if RegForm.non_field_errors %}
+			{% for error in RegForm.non_field_errors %}
+				<li>{{error}}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<h1>Hello, {{user.first_name}}!</h1>
+	<div>
+		<h3>Your Trip Schedule</h3>
+		<table>
+			<thead>
+				<th>Destination</th>
+				<th>Departing</th>
+				<th>Returning</th>
+				<th>Plan</th>
+			</thead>
+			{% if upcomingTrips %}
+			<tbody>
+				{% for trip in upcomingTrips %}
+				<tr>
+					<td>
+						<a href='{% url "tP:tripInfo" trip.id %}'>
+							{{trip.destination}}
+						</a>
+					</td>
+					<td>{{trip.start_date}}</td>
+					<td>{{trip.end_date}}</td>
+					<td>{{trip.plan}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			{% else %}
+			<p>You have no upcoming trips! Did you use all your miles or something?</p>
+			{% endif %}
+		</table>
+	</div>
+
+
+	<div>
+		<h3>Other User's Travel Plans</h3>
+		<table>
+			<thead>
+				<th>Name</th>
+				<th>Destination</th>
+				<th>Departing</th>
+				<th>Returning</th>
+				<th>Do you want to join?</th>
+			</thead>
+
+			{% if otherTrips %}
+			<tbody>
+				{% for trip in otherTrips %}
+				<tr>
+					<td>
+						{% for person in trip.traveler.all|slice:":1" %}
+							{{person.first_name}} {{person.last_name}}
+						{% endfor %}
+					</td>
+					<td>
+						<a href='{% url "tP:tripInfo" trip.id %}'>
+							{{trip.destination}}
+						</a>
+					</td>
+					<td>{{trip.start_date}}</td>
+					<td>{{trip.end_date}}</td>
+					<td><a href="{% url 'tP:joinTrip' trip.id %}">Join</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			{% else %}
+			<p>Nope.  Everyone else is boring.</p>
+			{% endif %}
+		</table>
+	</div>
+	<form action="{% url 'tP:addTrip' %}"><input type="submit" value="Add A New Trip"></form>
+</body>
+</html>
