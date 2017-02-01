@@ -16,8 +16,8 @@
 				 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 			{% endfor %}
 		{% endif %}
-		{% if RegForm.non_field_errors %}
-			{% for error in RegForm.non_field_errors %}
+		{% if AddTrip.non_field_errors %}
+			{% for error in AddTrip.non_field_errors %}
 				<li>{{error}}</li>
 			{% endfor %}
 		</ul>
@@ -29,13 +29,5 @@
 		{{addTrip.as_p}}
 		<input type="submit" value="Add">
 	</form>
-	User is
-	{{user}}
-	<br>
-	User id is
-	{{user_id}}
-	<br>
-	User's first name is
-	{{user.first_name}}
 </body>
 </html>

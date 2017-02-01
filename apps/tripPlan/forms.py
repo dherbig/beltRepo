@@ -1,6 +1,7 @@
 from django import forms
 from .models import travelPlan
 from django.contrib import messages
+from datetime import date
 
 class AddTrip(forms.ModelForm):
 	# Since most of this form is assembled automatically using ModelForm tricks, these first two lines format the start and end date fields to use the date picker widget. ^_^
@@ -23,7 +24,7 @@ class AddTrip(forms.ModelForm):
 		end = cleaned_data.get("end_date")
 
 		# Checks to see if the start comes after the end.
-		if start > end:
+		if start > end or start < date.today():
 			raise forms.ValidationError("The End Comes Before The Beginning!")
 			messages.error(request, "Trip lasts negative days.")
 			print('We just put up an error message...')
