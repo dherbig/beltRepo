@@ -24,7 +24,15 @@ class AddTrip(forms.ModelForm):
 		end = cleaned_data.get("end_date")
 
 		# Checks to see if the start comes after the end.
-		if start > end or start < date.today():
+		print(start)
+		print(end)
+		print(date.today())
+		print(start<date.today())
+		if start < date.today():
+			raise forms.ValidationError("Can't add an event that starts in the past!")
+			messages.error(request, "Trip 'already began'. Not gonna let that happen, bub.")
+			print('We just put up an error message...')
+		if start < end:
 			raise forms.ValidationError("The End Comes Before The Beginning!")
 			messages.error(request, "Trip lasts negative days.")
 			print('We just put up an error message...')

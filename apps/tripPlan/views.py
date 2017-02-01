@@ -30,7 +30,6 @@ def addTrip(request):
 def confirm(request):
 	# Stores the form's data
 	bound_form = AddTrip(request.POST)
-	print(bound_form)
 	theTraveler = User.objects.get(id=request.session['user_id'])
 	print(theTraveler)
 	# Checks the data integrity using the guidelines in forms.py
@@ -49,6 +48,15 @@ def confirm(request):
 	else:
 		# Something has gone wrong!
 		print("THIS TRIP IS RUINED!")
+		# Go to .errors and look at all of the places that errors could get sorted to. (e.g. start_date, destination)
+		print(bound_form.errors)
+		for field in bound_form.errors:
+			# If that section of the form has 1+ errors,
+			if bound_form.errors[field]:
+				# Report each error
+				for error in bound_form.errors[field]:
+					# By making an error flash message.
+					messages.error(request, error)
 		messages.error(request, 'Trip registration failed. Try again.')
 		# Go back to addTrip to try again.
 		return redirect('tP:addTrip')

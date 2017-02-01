@@ -59,7 +59,7 @@ def register(request):
 				# If that section of the form has 1+ errors,
 				if bound_form.errors[field]:
 					# Report each error
-					for error in bound_form.errors[error]:
+					for error in bound_form.errors[field]:
 						# By making an error flash message.
 						messages.error(request, error2)
 			print("Invalid Data on Forms")
